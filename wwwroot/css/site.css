@@ -97,6 +97,10 @@ font-weight: 600;
   float: right;
   vertical-align: top;
   }
+  .fixedBottomRight{
+    float: right;
+    vertical-align: bottom;
+    }
 .dividerArea{
   width: 300px;
   height: 50px;
