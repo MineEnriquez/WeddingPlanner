@@ -1,0 +1,67 @@
+﻿@{
+ViewData["Title"] = "Home Page";
+}
+<div class="wrapper">
+@model ModelForLoginPage
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <h3>Register</h3>
+
+    <form asp-action="Register" method="post">
+                    <div>
+                        <span class="ValidationError" asp-validation-for="Register.FirstName"></span> <br>
+                        <label class="InputLabel" asp-for="Register.FirstName"></label>
+                        <input class="InputField" asp-for="Register.FirstName">
+                    </div>
+                    <div>
+                        <span class="ValidationError" asp-validation-for="Register.LastName"></span> <br>
+                        <label class="InputLabel" asp-for="Register.LastName"></label>
+                        <input class="InputField" asp-for="Register.LastName">
+                    </div>
+                    <div>
+                        <span class="ValidationError" asp-validation-for="Register.Email"></span> <br>
+                        <label class="InputLabel" asp-for="Register.Email"></label>
+                        <input class="InputField" asp-for="Register.Email">
+                    </div>
+                    <div>
+                        <span class="ValidationError" asp-validation-for="Register.Password"></span> <br>
+                        <label class="InputLabel" asp-for="Register.Password"></label>
+                        <input class="InputField" asp-for="Register.Password">
+                    </div>
+                    <div>
+                        <span class="ValidationError" asp-validation-for="Register.Confirm"></span> <br>
+                        <label class="InputLabel" asp-for="Register.Confirm"></label>
+                        <input class="InputField" asp-for="Register.Confirm">
+                    </div>
+            <input class="InputButton" type="submit" value="Sign Up now">
+    </form>
+    </div>
+    <div class="col-sm">
+      <h3>Login</h3>
+    <form asp-action="Login" method="post">
+        <table>
+            <tr class="top">
+                <td>
+                    <div>
+                        <span class="ValidationError" asp-validation-for="Login.Email"></span> <br>
+                        <label class="InputLabel" asp-for="Login.Email"></label>
+                        <input class="InputField" asp-for="Login.Email" value="@ViewBag.Email">
+                    </div>
+                    <div>
+                        <span class="ValidationError" asp-validation-for="Login.Password"></span> <br>
+                        <label class="InputLabel" asp-for="Login.Password"></label>
+                        <input class="InputField" asp-for="Login.Password">
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <input class="InputButton" type="submit" value="Sign Up now">
+    </form>
+    </div>
+  </div>
+</div>
+
+
+</div>
