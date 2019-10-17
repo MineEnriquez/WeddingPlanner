@@ -16,6 +16,8 @@ namespace WeddingPlanner.Controllers
         private WeddingPlannerContext dbContext;
         public HomeController(WeddingPlannerContext context) { dbContext = context; }
 
+        // ------------LOGIN AND REGISTRATION--------------
+        #region Login and Registration 
         [Route("/")]
         [HttpGet]
         public IActionResult Index()
@@ -23,7 +25,6 @@ namespace WeddingPlanner.Controllers
             return View("Index");
         }
 
-        //-----------------
         [HttpPost("Register")]
         // public IActionResult Register(User _user)
         public IActionResult Register(ModelForLoginPage information)
@@ -48,15 +49,14 @@ namespace WeddingPlanner.Controllers
                 dbContext.Add(_user);
                 dbContext.SaveChanges();
                 ViewBag.Email = _user.Email;
-                return View("Index");  //if registration is successfull, what? return to the first page and wait for the user to login?
-                //or maybe go to the success page with the user already registered and logged in?
+                return View("Index");  
             }
             else
             {
                 // Oh no!  We need to return a ViewResponse to preserve the ModelState, and the errors it now contains!
                 return View("Index");
             }
-    }
+        }
 
         [Route("Login")]
         [HttpGet]
@@ -102,8 +102,10 @@ namespace WeddingPlanner.Controllers
 
                 }
 
-                if(HttpContext.Session.GetInt32("UserId")==null){
+                if (HttpContext.Session.GetInt32("UserId") == null)
+                {
                     HttpContext.Session.SetInt32("UserId", userInDb.UserId);
+                    HttpContext.Session.SetString("Name", userInDb.FirstName);
                 }
                 return Redirect("Dashboard");
             }
@@ -113,39 +115,126 @@ namespace WeddingPlanner.Controllers
                 return View("Login");
             }
         }
-
-        public void CleanUpUserId()
-        {    
-                    HttpContext.Session.Clear();
-        }
-
-        // //--------------
-        // [Route("Success")]
-        // public IActionResult Success()
-        // {
-        //     if(HttpContext.Session.GetInt32("UserId")==null){
-        //         return Redirect("/");
-        //     }
-        //     return View("Success");
-        // }
-
-        [Route("Dashboard")]
-        [HttpGet]
-        public IActionResult DisplayEvents()
-        {
-            if(HttpContext.Session.GetInt32("UserId")==null){
-                return Redirect("/");
-            }
-            return View("Dashboard");
-        }
-
         [Route("Logout")]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return Redirect("/");
         }
+        public void CleanUpUserId()
+        {
+            HttpContext.Session.Clear();
+        }
+        #endregion
 
+        //-------------------
+        [Route("Dashboard")]
+        [HttpGet]
+        public IActionResult DisplayEvents()
+        {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                return Redirect("/");
+            }
+            List<Wedding> ListOfWeddings = dbContext.Weddings.Include( g => g.Guests)
+                                .ThenInclude( u => u.GuestUser).ToList();
+            int? _userId = HttpContext.Session.GetInt32("UserId");
+            //
+            List<int> myPlannedEvents = ListOfWeddings.Where(u => u.UserId == _userId).Select(a => a.WeddingId).ToList(); 
+            List<int> myEvents = dbContext.Guests.Where(u => u.UserId == _userId).Select( w => w.WeddingId).ToList();
+            List<Wedding> DashboardList = new List<Wedding>();
+            
+            foreach(Wedding w in ListOfWeddings)
+            {
+                if (myPlannedEvents.Contains(w.WeddingId))
+                {
+                    w.ActionName = "Delete";
+                }
+                else if(myEvents.Contains(w.WeddingId))
+                {
+                    w.ActionName = "Un-RSVP";
+                }
+                else {
+                    w.ActionName = "RSVP";
+                }
+                DashboardList.Add(w);
+            }
+
+            return View("Dashboard", DashboardList);
+        }
+
+
+        [Route("AddWedding")]
+        [HttpGet]
+        public IActionResult DisplayTheAddWeddingPage()
+        {
+            ViewBag.Name = HttpContext.Session.GetString("Name");
+            ViewBag.UserId = HttpContext.Session.GetInt32("UserId");
+            return View("AddWedding");
+        }
+
+        [Route("CreateWedding")]
+        [HttpPost]
+        public IActionResult CreateWedding(Wedding _newWedding)
+        {
+           if(ModelState.IsValid)
+            {
+                dbContext.Weddings.Add(_newWedding);
+                dbContext.SaveChanges();
+
+                return Redirect("/Dashboard");
+            }
+            else
+            {
+                // Oh no!  We need to return a ViewResponse to preserve the ModelState, and the errors it now contains!
+                return View("AddWedding");
+            }
+        }
+
+        [Route("DisplayWedding/{_wedid}")]
+        [HttpGet]
+        public IActionResult DisplaysTheWeddingInformation(int _wedid)
+        {
+            Wedding theEvent = dbContext.Weddings
+                                .Include( g => g.Guests)
+                                .ThenInclude( u => u.GuestUser)
+                                .FirstOrDefault( w=> w.WeddingId == _wedid);
+            return View("DisplayWedding", theEvent);
+        }
+
+        [Route("Dashboard/{_action}/{_wedid}")]
+        [HttpGet]
+        public IActionResult RegisterForAnEvent(string _action, int _wedid)
+        {
+            int? _userid = HttpContext.Session.GetInt32("UserId");
+            if(_action=="Un-RSVP"){
+                Guest gg = dbContext.Guests.Where(x => x.UserId==_userid && x.WeddingId==_wedid).FirstOrDefault();
+                dbContext.Guests.Remove(gg);
+                dbContext.SaveChanges();
+            }
+            else if(_action=="RSVP"){
+                Guest g = new Guest();
+                g.UserId = (int)_userid;
+                g.WeddingId = _wedid;
+                dbContext.Guests.Add(g);
+                dbContext.SaveChanges();
+            }
+            else if(_action == "Delete"){
+                List<Guest> registeredGuests = dbContext.Guests.Where(g => g.WeddingId == _wedid).ToList(); 
+                foreach(Guest theguest in registeredGuests){
+                    dbContext.Guests.Remove(theguest);
+                }
+                dbContext.SaveChanges();
+                dbContext.Weddings.Remove(dbContext.Weddings.Find(_wedid));
+                dbContext.SaveChanges();
+            }
+
+         return Redirect("/Dashboard");
+
+        }
+
+        // ------------------ MISCELANEOUS -------------
+        #region  Miscellaneous
         public IActionResult Privacy()
         {
             return View();
@@ -156,5 +245,6 @@ namespace WeddingPlanner.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        #endregion
     }
 }

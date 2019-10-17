@@ -2958,7 +2958,7 @@
     ],
     "CSharpLanguageVersion": 800
   },
-  "RootNamespace": null,
+  "RootNamespace": "WeddingPlanner",
   "Documents": [
     {
       "FilePath": "Views\\Shared\\Error.cshtml",
@@ -2978,6 +2978,11 @@
     {
       "FilePath": "Views\\_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "Views\\Home\\AddWedding.cshtml",
+      "TargetPath": "Views\\Home\\AddWedding.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -3003,6 +3008,11 @@
     {
       "FilePath": "Views\\Home\\Dashboard.cshtml",
       "TargetPath": "Views\\Home\\Dashboard.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "Views\\Home\\DisplayWedding.cshtml",
+      "TargetPath": "Views\\Home\\DisplayWedding.cshtml",
       "FileKind": "mvc"
     },
     {

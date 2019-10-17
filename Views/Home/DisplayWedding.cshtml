@@ -1,0 +1,19 @@
+@using WeddingPlanner.Models
+@model Wedding
+
+<div class="fixedTopRight"><h6><a class="paddedMedium" href="/Dashboard">  Dashboard  </a>  <a class="paddedMedium" href="/Logout">Logout</a> </h6></div>
+<h1>@Model.PersonOne  and  @Model.PersonTwo</h1>
+
+<div class="wrapper">
+<h2 class="paddedMedium">@Model.EventDate</h2>
+
+<h3 class="paddedMedium">Guests:</h3>
+
+@foreach (var item in Model.Guests)
+{
+    <h5 class="indented">
+    @item.GuestUser.FirstName  @item.GuestUser.LastName
+    </h5>
+}
+
+</div>

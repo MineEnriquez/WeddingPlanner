@@ -30,3 +30,5 @@ C:\Git\BOOTCAMP\CodingDojo\Bootcamp_secondstack\EFc\WeddingPlanner\obj\Debug\net
 C:\Git\BOOTCAMP\CodingDojo\Bootcamp_secondstack\EFc\WeddingPlanner\obj\Debug\netcoreapp2.2\WeddingPlanner.pdb
 C:\Git\BOOTCAMP\CodingDojo\Bootcamp_secondstack\EFc\WeddingPlanner\obj\Debug\netcoreapp2.2\WeddingPlanner.csproj.CopyComplete
 C:\Git\BOOTCAMP\CodingDojo\Bootcamp_secondstack\EFc\WeddingPlanner\obj\Debug\netcoreapp2.2\Razor\Views\Home\Dashboard.g.cshtml.cs
+C:\Git\BOOTCAMP\CodingDojo\Bootcamp_secondstack\EFc\WeddingPlanner\obj\Debug\netcoreapp2.2\Razor\Views\Home\AddWedding.g.cshtml.cs
+c:\Git\BOOTCAMP\CodingDojo\Bootcamp_secondstack\EFc\WeddingPlanner\obj\Debug\netcoreapp2.2\Razor\Views\Home\DisplayWedding.g.cshtml.cs

@@ -1,0 +1,32 @@
+    <div class="wrapper">
+    @using WeddingPlanner.Models
+    @model Wedding
+    <h2>Hi @ViewBag.Name! Create a new Wedding Event</h2>
+
+	<form asp-action="CreateWedding" method="post">
+            <div>
+                <span class="ValidationError" asp-validation-for="PersonOne"></span> <br>
+                <label class="InputLabel" asp-for="PersonOne"></label>
+                <input class="InputField" asp-for="PersonOne">
+            </div>
+            <div>
+                <span class="ValidationError" asp-validation-for="PersonTwo"></span> <br>
+                <label class="InputLabel" asp-for="PersonTwo"></label>
+                <input class="InputField" asp-for="PersonTwo">
+            </div>
+            <div>
+                <span class="ValidationError" asp-validation-for="EventDate"></span> <br>
+                <label class="InputLabel" asp-for="EventDate"></label>
+                <input class="InputField" asp-for="EventDate">
+            </div>
+            <div>
+                <span class="ValidationError" asp-validation-for="Address"></span> <br>
+                <label class="InputLabel" asp-for="Address"></label>
+                <input class="InputField" asp-for="Address">
+            </div>
+            <input type="hidden" asp-for="UserId" value="@ViewBag.UserId">
+                <div>
+                    <input class="right" type="submit" value="Submit">
+                </div>
+        </form>
+    </div>

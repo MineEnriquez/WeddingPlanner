@@ -1,5 +1,7 @@
 <div class="fixedTopRight"><a href="Logout">Logout</a></div>
-
+@using WeddingPlanner.Models
+@model List<Wedding>
+  <div class="wrapper">
 <h1>Welcome to the Wedding Planner</h1>
 <div class="dividerArea"></div>
 <table class="table">
@@ -12,24 +14,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">Jim & Pam</th>
-      <td>Oct 12 2017</td>
-      <td>5</td>
-      <td>RSVP</td>
-    </tr>
-        <tr>
-      <th scope="row">Jill & Robert</th>
-      <td>May 12 2019</td>
-      <td>4</td>
-      <td>Delete</td>
-    </tr>
-        <tr>
-      <th scope="row">Ney & Liu</th>
-      <td>Nov 17 2019</td>
-      <td>5</td>
-      <td>Un-RSVP</td>
-    </tr>
+    @foreach(var e in Model)
+    {
+      <tr>
+        <th scope="row"> <a href="/DisplayWedding/@e.WeddingId">@e.PersonOne & @e.PersonTwo</a> </th>
+        <td>@e.EventDate</td>
+        <td>@e.Guests.Count</td>
+        <td><a href="/Dashboard/@e.ActionName/@e.WeddingId">@e.ActionName</a></td>
+      </tr>
+    }
   </tbody>
 </table>
-<a class="btn btn-primary btn-lg active fixedBottomRight" role="button" aria-pressed="true" href="/NewWedding">New Wedding</a>
+<a class="btn btn-primary btn-lg active fixedBottomRight" role="button" aria-pressed="true" href="/AddWedding">New Wedding</a>
+<div class="dividerArea"></div>
+</div>
